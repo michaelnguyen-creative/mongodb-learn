@@ -14,7 +14,7 @@ module.exports = {
       // Verify if we got a good 'database' object
       const database = await client.connect()
       if (!database) throw new Error("'database' object is undefined")
-      _db = db.db('employees')
+      _db = database.db('employees')
       console.log('Successfully connected to MongoDb')
     } catch (err) {
       console.log('error connecting to MongoDB', err)
