@@ -41,7 +41,7 @@ recordRoutes.post('/add', async (req, res) => {
   }
 })
 
-recordRoutes.post('/:id', async (req, res) => {
+recordRoutes.post('/update/:id', async (req, res) => {
   let db = dbo.getDb()
   let myQuery = { _id: new ObjectId(req.params.id) }
   let newValues = {
