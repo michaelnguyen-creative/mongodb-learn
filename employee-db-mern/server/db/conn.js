@@ -1,20 +1,21 @@
 const { MongoClient } = require('mongodb')
 
 const { ATLAS_URI } = process.env
-const client = new MongoClient(ATLAS_URI, {
+const mongoClient = new MongoClient(ATLAS_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
 
-var _db
+let _db
 
 module.exports = {
   connectToServer: async () => {
     try {
       // Verify if we got a good 'database' object
-      const database = await client.connect()
-      if (!database) throw new Error("'database' object is undefined")
-      _db = database.db('employees')
+      const client = await mongoClient.connect()
+      if (!client) throw new Error
+      _db = client.db('employees')
+      // console.log('_db', _db)
       console.log('Successfully connected to MongoDb')
     } catch (err) {
       console.log('error connecting to MongoDB', err)
