@@ -26,13 +26,7 @@ export default function Edit() {
       level: form.level,
     }
 
-    mutate(`/record/update/${params.id}`, {
-      method: 'POST',
-      body: JSON.stringify(editedPerson),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    mutate(`/record/update/${params.id}`, 'update', editedPerson)
     // This will send a post request to update the data in the database.
     // await fetch(`/record/update/${params.id}`, {
     //   method: 'POST',

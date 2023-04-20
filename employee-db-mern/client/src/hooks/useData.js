@@ -22,9 +22,31 @@ export const useData = (apiEndpoint, skip) => {
     setLoading(false)
   }, [apiEndpoint])
 
-  const mutate = async (uri, options) => {
+  const mutate = async (uri, operation, data) => {
+    const operations = {
+      create: {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      },
+      update: {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      },
+      delete: {
+        method: 'DELETE',
+      },
+    }
+    if (!Object.keys(operations).includes(operation)) {
+      throw new Error('Unsupported operation')
+    }
     setLoading(true)
-    await fetch(`${baseUrl + uri}`, { ...options })
+    await fetch(`${baseUrl + uri}`, { ...operations[operation] })
     await fetchData()
     setLoading(false)
   }

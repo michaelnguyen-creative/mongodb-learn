@@ -31,9 +31,7 @@ export default function RecordList() {
   let records = data ? data : []
 
   async function deleteRecord(id) {
-    await mutate(`/record/${id}`, {
-      method: 'DELETE',
-    })
+    await mutate(`/record/${id}`, 'delete')
     const newRecords = records.filter((el) => (el._id) !== id)
     records = newRecords
   }

@@ -18,15 +18,7 @@ const Create = () => {
   const onSubmit = async (e) => {
     e.preventDefault()
     const newPerson = { ...form }
-
-    await mutate('/record/add', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newPerson),
-    })
-
+    await mutate('/record/add', 'create', newPerson)
     setForm({ name: '', position: '', level: '' })
     navigate('/')
   }
