@@ -1,47 +1,21 @@
-import { useState, useEffect } from 'react'
+// import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router'
+import { useData } from '../hooks/useData'
 
 export default function Edit() {
-  const [form, setForm] = useState({
-    name: '',
-    position: '',
-    level: '',
-    records: [],
-  })
   const params = useParams()
   const navigate = useNavigate()
+  const [{ data, loading, updateData }, mutate] = useData(
+    `/record/${params.id.toString()}`
+  )
 
-  useEffect(() => {
-    async function fetchData() {
-      const id = params.id.toString()
-      const response = await fetch(
-        `http://localhost:5000/record/${params.id.toString()}`
-      )
+  if (loading) return 'Loading data'
+  const form = data ? data : {}
 
-      if (!response.ok) {
-        const message = `An error has occurred: ${response.statusText}`
-        window.alert(message)
-        return
-      }
+  console.log('data', data)
 
-      const record = await response.json()
-      if (!record) {
-        window.alert(`Record with id ${id} not found`)
-        navigate('/')
-        return
-      }
-
-      setForm(record)
-    }
-
-    fetchData()
-
-    return
-  }, [params.id, navigate])
-
-  // These methods will update the state properties.
   const updateForm = (value) => {
-    return setForm((prev) => ({ ...prev, ...value }))
+    updateData(value)
   }
 
   async function onSubmit(e) {
@@ -52,14 +26,21 @@ export default function Edit() {
       level: form.level,
     }
 
-    // This will send a post request to update the data in the database.
-    await fetch(`http://localhost:5000/record/update/${params.id}`, {
+    mutate(`/record/update/${params.id}`, {
       method: 'POST',
       body: JSON.stringify(editedPerson),
       headers: {
         'Content-Type': 'application/json',
       },
     })
+    // This will send a post request to update the data in the database.
+    // await fetch(`/record/update/${params.id}`, {
+    //   method: 'POST',
+    //   body: JSON.stringify(editedPerson),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // })
 
     navigate('/')
   }

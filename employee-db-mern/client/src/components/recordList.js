@@ -25,13 +25,13 @@ const Record = (props) => (
 )
 
 export default function RecordList() {
-  const [{ data, loading }, mutate] = useData('http://localhost:5000/record')
+  const [{ data, loading }, mutate] = useData('/record')
 
   if (loading) return 'Loading data'
   let records = data ? data : []
 
   async function deleteRecord(id) {
-    await mutate(`/${id}`, {
+    await mutate(`/record/${id}`, {
       method: 'DELETE',
     })
     const newRecords = records.filter((el) => (el._id) !== id)
